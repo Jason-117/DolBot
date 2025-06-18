@@ -59,6 +59,8 @@
 
                 const userListHtml = users.map(user => `
                     <div class="user-item">
+                        <strong>姓:</strong> ${user.firstName || 'N/A'}<br>
+                        <strong>名:</strong> ${user.lastName || 'N/A'}<br>
                         <strong>用户名:</strong> ${user.username || 'N/A'}<br>
                         <strong>最后交互:</strong> ${user.lastInteraction ? new Date(user.lastInteraction).toLocaleString() : 'N/A'}
                     </div>
