@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户数据</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        h1 { color: #0056b3; }
+        #user-data {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .user-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .user-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .loading {
+            font-style: italic;
+            color: #666;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>访问用户</h1>
+    <div id="user-data">
+        <p class="loading">正在加载用户数据...</p>
+    </div>
+
+    <script>
+        async function fetchUsers() {
+            const userDataDiv = document.getElementById('user-data');
+            userDataDiv.innerHTML = '<p class="loading">正在加载用户数据...</p>';
+
+            try {
+                const response = await fetch('https://jason-117-tbot-33.deno.dev/users');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP 错误！状态：${response.status}`);
+                }
+
+                const users = await response.json();
+
+                if (users.length === 0) {
+                    userDataDiv.innerHTML = '<p>暂无用户数据。</p>';
+                    return;
+                }
+
+                const userListHtml = users.map(user => `
+                    <div class="user-item">
+                        <strong>用户名:</strong> ${user.username || 'N/A'}<br>
+                        <strong>最后交互:</strong> ${user.lastInteraction ? new Date(user.lastInteraction).toLocaleString() : 'N/A'}
+                    </div>
+                `).join('');
+
+                userDataDiv.innerHTML = userListHtml;
+
+            } catch (error) {
+                console.error('获取用户数据失败:', error);
+                userDataDiv.innerHTML = `<p class="error">加载数据失败: ${error.message}</p>`;
+            }
+        }
+
+        // 页面加载完成后立即获取数据
+        document.addEventListener('DOMContentLoaded', fetchUsers);
+    </script>
+</body>
+</html>
