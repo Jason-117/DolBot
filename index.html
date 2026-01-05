@@ -182,7 +182,7 @@
             const username = user.username;
             const timeStr = user.lastInteraction ? new Date(user.lastInteraction).toLocaleString('zh-CN', { hour12: false }) : '无记录';
             const usernameDisplay = username 
-                ? `<a href="https://wa.me/${username}" target="_blank" class="username-link">@${username}</a>`
+                ? `<a href="https://t.me/${username}" target="_blank" class="username-link">@${username}</a>`
                 : `<span class="username-text">无用户名</span>`;
 
             return `
