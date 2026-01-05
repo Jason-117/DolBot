@@ -113,7 +113,7 @@
             });
 
             if (response.status === 401) {
-                throw new Error('身份校验失败：Token 无效');
+                throw new Error('Token 无效');
             }
             if (!response.ok) throw new Error('服务器响应错误');
 
